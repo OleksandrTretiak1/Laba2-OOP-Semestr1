@@ -6,46 +6,22 @@ namespace laba4
     class Programm
     {
         // Метод для визначення, яка зараз пара або перерва
-        static string WhatLesson(MyTime mt)
+        public string WhatLesson(MyTime[] start, MyTime[] end)
         {
-            // Масив початкових моментів пар
-            MyTime[] start = {
-                new MyTime(8, 0, 0),
-                new MyTime(9, 40, 0),
-                new MyTime(11, 20, 0),
-                new MyTime(13, 0, 0),
-                new MyTime(14, 40, 0),
-                new MyTime(16, 10, 0),
-                new MyTime(17, 40, 0)
-            };
-            // Масив кінцевих моментів пар
-            MyTime[] end =
+            int currentSec = ToSecSinceMidnight();
+
+            if (currentSec < start[0].ToSecSinceMidnight()) return "Пари ще не почалися";
+            if (currentSec > end[end.Length - 1].ToSecSinceMidnight()) return "Пари вже скінчилися";
+
+            for (int i = 0; i < start.Length; i++)
             {
-                new MyTime(9, 20, 0),
-                new MyTime(11, 0, 0),
-                new MyTime(12, 40, 0),
-                new MyTime(14, 20, 0),
-                new MyTime(16, 0, 0),
-                new MyTime(17, 30, 0)
-            };
-
-            // Кількість секунд в день
-            int currentTime = ToSecSinceMidnight(mt);
-            // Тривалість пари
-            int lessonLength = 3600 + 20 * 60;
-
-            // Якщо зараз ще не почалася перша пара
-            if (currentTime < ToSecSinceMidnight(start[0])) return "Пари ще не почалися";
-            // Якщо зараз пізніше, ніж остання пара
-            if (currentTime > ToSecSinceMidnight(end[5])) return "Пари вже скінчилися";
-
-            // Перевірка, яка зараз пара або перерва між ними
-            for (int i = 0; i < start.Length - 1; i++)
-            {
-                if (IsInRange(mt, start[i], start[i + 1]))
+                if (IsInRange(start[i], end[i]))
                 {
-                    if (IsInRange(mt, start[i], end[i])) { return $"{i + 1}-а пара"; }
-                    else return $"перерва між {i + 1}-ю та {i + 2}-ю парою";
+                    return $"{i + 1}-а пара";
+                }
+                else if (i < start.Length - 1 && IsInRange(end[i], start[i + 1]))
+                {
+                    return $"Перерва між {i + 1}-ю та {i + 2}-ю парою";
                 }
             }
             return "Пари вже скінчилися";
