@@ -27,21 +27,17 @@ namespace laba4
             return "Пари вже скінчилися";
         }
 
-        // Метод для перевірки, чи належить даний момент часу відрізку між двома іншими моментами
-        static bool IsInRange(MyTime start, MyTime finish, MyTime t)
+        // Перевіряє, чи належить поточний момент часу до діапазону
+        public bool IsInRange(MyTime start, MyTime end)
         {
-            int startSeconds = ToSecSinceMidnight(start);
-            int finishSeconds = ToSecSinceMidnight(finish);
-            int momentSeconds = ToSecSinceMidnight(t);
+            int startSec = start.ToSecSinceMidnight();
+            int endSec = end.ToSecSinceMidnight();
+            int currentSec = ToSecSinceMidnight();
 
-            // Якщо момент finish є меншим за start, значить, ми маємо справу з перехресним днем
-            if (finishSeconds < startSeconds)
-            {
-                finishSeconds = 24 * 60 * 60 + finishSeconds; // Додаємо 24 години до finish, щоб уникнути проблеми з перехресним днем
-            }
+            if (endSec < startSec)
+                endSec += 24 * 3600;
 
-            // Перевірка, чи момент t знаходиться між start і finish
-            return momentSeconds >= startSeconds && momentSeconds < finishSeconds;
+            return currentSec >= startSec && currentSec < endSec;
         }
 
         // Метод для обчислення різниці між двома моментами часу
