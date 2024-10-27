@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Лабораторна_робота_2_ООП__1_семестр_
 {
-    internal class Program
+    internal class MatrixOperations
     {
-        static void Main(string[] args)
-        {
-         //тест
-        }
     }
 }
