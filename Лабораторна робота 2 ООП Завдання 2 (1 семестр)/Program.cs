@@ -40,76 +40,78 @@ namespace laba4
             return currentSec >= startSec && currentSec < endSec;
         }
 
+        public class MyTime
+    {
+        // Властивості годин, хвилин та секунд
+        public int Hour { get; private set; }
+        public int Minute { get; private set; }
+        public int Second { get; private set; }
+
+        // Конструктор класу MyTime
+        public MyTime(int hour, int minute, int second)
+        {
+            Hour = hour;
+            Minute = minute;
+            Second = second;
+        }
+
+        // Перевизначення методу ToString для зручного виводу
+        public override string ToString()
+        {
+            return $"{Hour}:{Minute:D2}:{Second:D2}";
+        }
+
+        // Метод для конвертації поточного моменту часу в секунди від початку доби
+        public int ToSecSinceMidnight()
+        {
+            return Hour * 3600 + Minute * 60 + Second;
+        }
+
         // Метод для обчислення різниці між двома моментами часу
-        static int Difference(MyTime mt1, MyTime mt2)
+        public int Difference(MyTime other)
         {
-            return ToSecSinceMidnight(mt1) - ToSecSinceMidnight(mt2);
+            return ToSecSinceMidnight() - other.ToSecSinceMidnight();
         }
 
-        // Метод для додавання секунд до моменту часу
-        static MyTime AddSeconds(MyTime t, int s)
+        // Метод для додавання секунд до поточного моменту часу
+        public MyTime AddSeconds(int seconds)
         {
-            int totalSeconds = ToSecSinceMidnight(t) + s;
+            int totalSeconds = ToSecSinceMidnight() + seconds;
             return FromSecSinceMidnight(totalSeconds);
         }
 
-        // Метод для додавання однієї години до моменту часу
-        static MyTime AddOneHour(MyTime t)
+         // Статичний метод для конвертації секунд з півночі у формат MyTime
+        public static MyTime FromSecSinceMidnight(int seconds)
         {
-            int totalSeconds = ToSecSinceMidnight(t) + 3600;
-            return FromSecSinceMidnight(totalSeconds);
-        }
+            int secPerDay = 24 * 3600;
+            seconds %= secPerDay;
+            if (seconds < 0)
+                seconds += secPerDay;
 
-        // Метод для додавання однієї хвилини до моменту часу
-        static MyTime AddOneMinute(MyTime t)
-        {
-            int totalSeconds = ToSecSinceMidnight(t) + 60;
-            return FromSecSinceMidnight(totalSeconds);
-        }
+            int h = seconds / 3600;
+            int m = (seconds / 60) % 60;
+            int s = seconds % 60;
 
-        // Метод для додавання однієї секунди до моменту часу
-        static MyTime AddOneSecond(MyTime t)
-        {
-            int totalSeconds = ToSecSinceMidnight(t) + 1;
-            return FromSecSinceMidnight(totalSeconds);
-        }
-
-        // Метод для перетворення секунд з півночі в момент часу
-        static MyTime FromSecSinceMidnight(int t)
-        {
-            int secPerDay = 60 * 60 * 24;
-            t %= secPerDay;
-            if (t < 0)
-                t += secPerDay;
-            int h = t / 3600;
-            int m = (t / 60) % 60;
-            int s = t % 60;
             return new MyTime(h, m, s);
         }
+     
 
-        // Метод для перетворення моменту часу в секунди з півночі
-        static int ToSecSinceMidnight(MyTime t)
+        // Додає одну годину до поточного часу
+        public MyTime AddOneHour()
         {
-            return t.hour * 3600 + t.minute * 60 + t.second;
+            return AddSeconds(3600);
         }
 
-        // Структура, яка представляє момент часу
-        struct MyTime
+        // Додає одну хвилину до поточного часу
+        public MyTime AddOneMinute()
         {
-            public int hour, minute, second;
-            // Конструктор
-            public MyTime(int h, int m, int s)
-            {
-                hour = h;
-                minute = m;
-                second = s;
-            }
-            // Перевизначення методу ToString для виводу моменту часу у зручному форматі
-            public override string ToString()
-            {
-                return $"{hour}:{minute.ToString("00")}:{second.ToString("00")}";
-            }
+            return AddSeconds(60);
+        }
 
+        // Додає одну секунду до поточного часу
+        public MyTime AddOneSecond()
+        {
+            return AddSeconds(1);
         }
 
 
