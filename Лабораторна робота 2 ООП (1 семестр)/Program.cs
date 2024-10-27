@@ -10,7 +10,7 @@ namespace Лабораторна_робота_2_ООП__1_семестр_
     {
         static void Main(string[] args)
         {
-
+         //тест
         }
     }
 }
