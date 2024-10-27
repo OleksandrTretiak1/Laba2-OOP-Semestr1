@@ -8,6 +8,7 @@ namespace MatrixNamespace
 {
     public partial class MyMatrix
     {
+        // Оператор додавання двох матриць. Працює лише для матриць однакового розміру
         public static MyMatrix operator +(MyMatrix a, MyMatrix b)
         {
             if (a.Height != b.Height || a.Width != b.Width)
@@ -24,6 +25,8 @@ namespace MatrixNamespace
             return new MyMatrix(result);
         }
 
+        // Оператор множення двох матриць. Працює лише, якщо кількість стовпців першої
+        // матриці дорівнює кількості рядків другої
         public static MyMatrix operator *(MyMatrix a, MyMatrix b)
         {
             if (a.Width != b.Height)
@@ -43,6 +46,7 @@ namespace MatrixNamespace
             return new MyMatrix(result);
         }
 
+        // Приватний метод для створення транспонованого масиву матриці (лише масив)
         private double[,] GetTransponedArray()
         {
             var transposed = new double[Width, Height];
@@ -56,11 +60,13 @@ namespace MatrixNamespace
             return transposed;
         }
 
+        // Метод для створення копії транспонованої матриці (повертає MyMatrix)
         public MyMatrix GetTransponedCopy()
         {
             return new MyMatrix(GetTransponedArray());
         }
 
+        // Метод для транспонування матриці "на місці" (замінює елементи поточної матриці)
         public void TransponeMe()
         {
             elements = GetTransponedArray();
