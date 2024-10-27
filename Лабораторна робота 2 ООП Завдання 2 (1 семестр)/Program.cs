@@ -115,66 +115,67 @@ namespace laba4
         }
 
 
-        static void Main(string[] args)
-        {
-            // Налаштування виводу для підтримки кирилиці в консолі
-            Console.OutputEncoding = System.Text.Encoding.GetEncoding(1251);
-
-            // Запит часу від користувача
-            Console.WriteLine("Введіть час: ");
-            int[] time = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
-            MyTime mt = new MyTime(time[0], time[1], time[2]);
-
-            // Вибір методу користувачем
-            Console.WriteLine("Виберіть метод: ");
-            int choice = int.Parse(Console.ReadLine());
-            switch (choice)
+            static void Main(string[] args)
             {
-                case 1:
-                    Console.WriteLine(ToSecSinceMidnight(mt));
-                    break;
-                case 2:
-                    Console.WriteLine("Введіть кількість секунд");
-                    int seconds = int.Parse(Console.ReadLine());
-                    Console.WriteLine(FromSecSinceMidnight(seconds));
-                    break;
-                case 3:
-                    Console.WriteLine(AddOneSecond(mt));
-                    break;
-                case 4:
-                    Console.WriteLine(AddOneMinute(mt));
-                    break;
-                case 5:
-                    Console.WriteLine(AddOneHour(mt));
-                    break;
-                case 6:
-                    Console.WriteLine("Введіть кількість секунд, які треба додати");
-                    int sec = int.Parse(Console.ReadLine());
-                    Console.WriteLine(AddSeconds(mt, sec));
-                    break;
-                case 7:
-                    Console.WriteLine("Введіть другий момент часу: ");
-                    int[] time2 = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
-                    MyTime mt2 = new MyTime(time2[0], time2[1], time2[2]);
-                    Console.WriteLine(Difference(mt, mt2));
-                    break;
-                case 8:
-                    Console.WriteLine("Введіть стартовий момент часу: ");
-                    int[] timeStart = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
-                    MyTime start = new MyTime(timeStart[0], timeStart[1], timeStart[2]);
-                    Console.WriteLine("Введіть кінцевий момент часу: ");
-                    int[] timeFinish = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
-                    MyTime finish = new MyTime(timeFinish[0], timeFinish[1], timeFinish[2]);
-                    if (IsInRange(start, finish, mt))
-                        Console.WriteLine("Обраний момент часу знаходиться в діапазоні");
-                    else
-                        Console.WriteLine("Обраний момент часу не знаходиться в діапазоні");
-                    break;
-                case 9:
-                    Console.WriteLine(WhatLesson(mt));
-                    break;
+                Console.OutputEncoding = System.Text.Encoding.GetEncoding(1251);
+
+                int[] timeInput = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
+                MyTime time = new MyTime(timeInput[0], timeInput[1], timeInput[2]);
+
+                int choice = int.Parse(Console.ReadLine());
+                switch (choice)
+                {
+                    case 1:
+                        Console.WriteLine("Секунди від півночі: " + time.ToSecSinceMidnight());
+                        break;
+                    case 2:
+                        Console.WriteLine("Введіть кількість секунд від півночі:");
+                        int seconds = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Час: " + MyTime.FromSecSinceMidnight(seconds));
+                        break;
+                    case 3:
+                        Console.WriteLine("Час +1 секунда: " + time.AddOneSecond());
+                        break;
+                    case 4:
+                        Console.WriteLine("Час +1 хвилина: " + time.AddOneMinute());
+                        break;
+                    case 5:
+                        Console.WriteLine("Час +1 година: " + time.AddOneHour());
+                        break;
+                    case 6:
+                        Console.WriteLine("Введіть кількість секунд для додавання:");
+                        int sec = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Час після додавання секунд: " + time.AddSeconds(sec));
+                        break;
+                    case 7:
+                        Console.WriteLine("Введіть другий час у форматі ГГ ММ СС:");
+                        int[] time2Input = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
+                        MyTime time2 = new MyTime(time2Input[0], time2Input[1], time2Input[2]);
+                        Console.WriteLine("Різниця в секундах: " + time.Difference(time2));
+                        break;
+                    case 8:
+                        Console.WriteLine("Введіть стартовий момент часу у форматі ГГ ММ СС:");
+                        int[] startInput = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
+                        MyTime start = new MyTime(startInput[0], startInput[1], startInput[2]);
+
+                        Console.WriteLine("Введіть кінцевий момент часу у форматі ГГ ММ СС:");
+                        int[] endInput = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
+                        MyTime end = new MyTime(endInput[0], endInput[1], endInput[2]);
+
+                        if (time.IsInRange(start, end))
+                            Console.WriteLine("Обраний момент часу знаходиться в діапазоні.");
+                        else
+                            Console.WriteLine("Обраний момент часу не знаходиться в діапазоні.");
+                        break;
+                    case 9:
+                        Console.WriteLine("Зараз: " + time.WhatLesson());
+                        break;
+                    default:
+                        Console.WriteLine("Неправильний вибір операції.");
+                        break;
+                }
+                Console.ReadLine();
             }
-            Console.ReadLine();
         }
     }
 }
