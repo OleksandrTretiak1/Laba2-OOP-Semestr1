@@ -72,4 +72,58 @@ namespace MatrixNamespace
             elements = GetTransponedArray();
         }
     }
+    public partial class MyMatrix
+    {
+        public static void Main(string[] args)
+        {
+            // Створюємо дві матриці для демонстрації операцій
+            double[,] array1 = { { 1, 2 }, { 3, 4 } };
+            double[,] array2 = { { 5, 6 }, { 7, 8 } };
+
+            // Ініціалізуємо матриці з масивів
+            MyMatrix matrix1 = new MyMatrix(array1);
+            MyMatrix matrix2 = new MyMatrix(array2);
+
+            Console.WriteLine("Перша матриця:");
+            Console.WriteLine(matrix1);
+
+            Console.WriteLine("Друга матриця:");
+            Console.WriteLine(matrix2);
+
+            // Додавання матриць
+            try
+            {
+                MyMatrix sumMatrix = matrix1 + matrix2;
+                Console.WriteLine("Сума матриць:");
+                Console.WriteLine(sumMatrix);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Помилка при додаванні матриць: " + ex.Message);
+            }
+
+            // Множення матриць
+            try
+            {
+                MyMatrix productMatrix = matrix1 * matrix2;
+                Console.WriteLine("Добуток матриць:");
+                Console.WriteLine(productMatrix);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Помилка при множенні матриць: " + ex.Message);
+            }
+
+            // Транспонування матриці
+            MyMatrix transposedMatrix = matrix1.GetTransponedCopy();
+            Console.WriteLine("Транспонована перша матриця:");
+            Console.WriteLine(transposedMatrix);
+
+            // Пряме транспонування
+            matrix1.TransponeMe();
+            Console.WriteLine("Перша матриця після прямого транспонування:");
+            Console.WriteLine(matrix1);
+            Console.ReadLine();
+        }
+    }
 }
