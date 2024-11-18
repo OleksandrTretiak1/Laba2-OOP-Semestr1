@@ -62,24 +62,8 @@ namespace MatrixNamespace
         }
 
         // Конструктор: створення матриці з рядка, що містить числа, розділені пробілами та переведенням рядка
-        public MyMatrix(string matrixString)
+        public MyMatrix(string matrixString) : this(matrixString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
         {
-            var rows = matrixString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            int rowCount = rows.Length;
-            int colCount = rows[0].Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).Length;
-
-            elements = new double[rowCount, colCount];
-            for (int i = 0; i < rowCount; i++)
-            {
-                var rowValues = rows[i].Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                if (rowValues.Length != colCount)
-                    throw new ArgumentException("Матриця повинна бути прямокутною.");
-
-                for (int j = 0; j < colCount; j++)
-                {
-                    elements[i, j] = double.Parse(rowValues[j]);
-                }
-            }
         }
 
         // Властивість для отримання висоти (кількості рядків) матриці
