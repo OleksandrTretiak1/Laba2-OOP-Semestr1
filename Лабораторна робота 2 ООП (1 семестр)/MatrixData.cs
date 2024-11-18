@@ -97,16 +97,17 @@ namespace MatrixNamespace
         // Перевизначення методу ToString() для зручного виведення матриці
         public override string ToString()
         {
-            var result = "";
+            var sb = new StringBuilder();
             for (int i = 0; i < Height; i++)
             {
                 for (int j = 0; j < Width; j++)
                 {
-                    result += elements[i, j].ToString("0.##") + "\t";
+                    sb.Append(elements[i, j].ToString("0.##")).Append("\t");
                 }
-                result = result.TrimEnd() + "\n";
+                sb.Length--; 
+                sb.AppendLine(); 
             }
-            return result;
+            return sb.ToString();
         }
     }
 }
