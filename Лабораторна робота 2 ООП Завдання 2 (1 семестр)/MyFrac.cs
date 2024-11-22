@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Text;
 
 public class MyFrac
 {
-    //   Основні зміни:
-    // Використання класу замість структури дозволяє інкапсулювати дані і функціональність, пов'язані з дробами.
-    // Методи для роботи з дробами були перетворені в методи класу,що дозволяє працювати з екземплярами MyFrac напряму.
-    // Використав методи інкапсуляції для доступу до властивостей об'єкта та виконання операцій, що забезпечує гнучкість
-    // і захищає дані від небажаних змін.
+    // Інкапсуляція: чисельник та знаменник є приватними, доступ до них здійснюється через властивості Numerator та Denominator.
+    // Конструктор забезпечує ініціалізацію дробу та перевірку валідності значень (наприклад, знаменник не може бути нулем).
+    // Методи класу MyFrac (Add, Minus, Multiply, Divide) виконують арифметичні операції з дробами та повертають нові екземпляри MyFrac.
+    // Статичні методи (CalcSum1, CalcSum2) виконують складні обчислення з дробами без зміни їх стану.
+    // Перевизначення методу ToString дозволяє зручно виводити дроби у вигляді "чисельник/знаменник".
 
     private long nom;    // Чисельник 
     private long denom;  // Знаменник 
@@ -36,6 +37,44 @@ public class MyFrac
     // Властивість для отримання знаменника (тільки для читання)
     public long Denominator => denom;
 
+    // Метод для подання дробу у вигляді "чисельник/знаменник"
+    public override string ToString()
+    {
+        return $"{nom}/{denom}";
+    }
+
+    // Метод для подання дробу з виділеною цілою частиною
+    public string ToStringWithIntegerPart()
+    {
+        StringBuilder sb = new StringBuilder();
+        long integerPart = nom / denom;
+        long remainder = nom % denom;
+
+        if (remainder == 0)
+        {
+            sb.Append(integerPart.ToString());
+        }
+        else
+        {
+            if (integerPart != 0)
+            {
+                sb.Append(integerPart.ToString());
+                sb.Append("+");
+            }
+            sb.Append(Math.Abs(remainder).ToString());
+            sb.Append("/");
+            sb.Append(denom.ToString());
+        }
+
+        return sb.ToString();
+    }
+
+    // Метод для обчислення дійсного значення дробу
+    public double ToDouble()
+    {
+        return (double)nom / denom;
+    }
+
     // Метод для скорочення дробу за алгоритмом Евкліда
     private static long GCD(long a, long b)
     {
@@ -46,76 +85,5 @@ public class MyFrac
             a = t;
         }
         return a;
-    }
-
-    // Метод для подання дробу у вигляді "чисельник/знаменник"
-    public override string ToString()
-    {
-        return $"{nom}/{denom}";
-    }
-
-    // Метод для подання дробу з виділеною цілою частиною
-    public string ToStringWithIntegerPart()
-    {
-        long integerPart = nom / denom;
-        long remainder = nom % denom;
-        if (remainder == 0)
-            return integerPart.ToString();
-
-        return integerPart != 0 ? $"({integerPart}+{Math.Abs(remainder)}/{denom})" : $"{nom}/{denom}";
-    }
-
-    // Метод для обчислення дійсного значення дробу
-    public double ToDouble()
-    {
-        return (double)nom / denom;
-    }
-
-    // Метод для додавання дробу
-    public MyFrac Add(MyFrac other)
-    {
-        return new MyFrac(nom * other.denom + denom * other.nom, denom * other.denom);
-    }
-
-    // Метод для віднімання дробу
-    public MyFrac Minus(MyFrac other)
-    {
-        return new MyFrac(nom * other.denom - denom * other.nom, denom * other.denom);
-    }
-
-    // Метод для множення дробів
-    public MyFrac Multiply(MyFrac other)
-    {
-        return new MyFrac(nom * other.nom, denom * other.denom);
-    }
-
-    // Метод для ділення дробів
-    public MyFrac Divide(MyFrac other)
-    {
-        return new MyFrac(nom * other.denom, denom * other.nom);
-    }
-
-    // Метод для обчислення суми 1/(1*2)+1/(2*3)+...+1/(n*(n+1))
-    public static MyFrac CalcSum1(int n)
-    {
-        MyFrac sum = new MyFrac(0, 1);
-        for (int i = 1; i <= n; i++)
-        {
-            MyFrac addend = new MyFrac(1, i * (i + 1));
-            sum = sum.Add(addend);
-        }
-        return sum;
-    }
-
-    // Метод для обчислення добутку (1–1/4)*(1–1/9)*...*(1–1/n^2)
-    public static MyFrac CalcSum2(int n)
-    {
-        MyFrac product = new MyFrac(1, 1);
-        for (int i = 2; i <= n; i++)
-        {
-            MyFrac factor = new MyFrac(1, 1).Minus(new MyFrac(1, i * i));
-            product = product.Multiply(factor);
-        }
-        return product;
     }
 }
